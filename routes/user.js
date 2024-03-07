@@ -8,6 +8,9 @@ const User = require("../models/UserModel");
 const {SignUPController,LoginController,forgetPassword,isUsernameExist} =require('../Controller/UserController');
 const {signupValidation,LoginValidation} =require('../validation/FormValidation');
 
+
+// 
+
 /**
  * @method - POST
  * @param - /signup
@@ -37,10 +40,18 @@ check("email", "Please enter a valid email").isEmail().notEmpty(),
     }).notEmpty()
 ,forgetPassword)
 
+router.get('/logout',auth,(req,res)=>{
+  res.clearCookie('token');
+  res.redirect('/')
+})
+
 router.get("/dashboard", auth, async (req, res) => {
   try {
-    const user = await User.findOne(req.userId);
+    console.log(req.userid);
+    const user = await User.findOne({email:req.userid.toLowerCase()});
+    
     res.json(user);
+    // console.log(user);
   } catch (e) {
     res.send({ message: "Error in Fetching user" });
   }

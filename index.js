@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser=require('cookie-parser')
 const user = require("./routes/user");
+const path = require("path");
 require('dotenv').config()
 require("./config/db");
 
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
  * Router - /user/*
  * Method - *
  */
+app.use(express.static(path.resolve(__dirname,'/views')));
 app.use("/user", user);
 
 app.listen(PORT, (req, res) => {

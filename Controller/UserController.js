@@ -32,6 +32,7 @@ const SignUPController= async (req, res) => {
             const jwt = user_auth.jwtSign(email, '1y')
             // console.log(jwt)
             res.cookie('token', jwt, { expires: farFuture, httpOnly: true, secure: true })
+            console.log(result);
             res.redirect('/user/dashboard')
             // delete req.session.prev
         })
@@ -81,7 +82,7 @@ const LoginController=async function(req,res){
         res.cookie('token', ad, { maxAge: oneYearInMilliseconds, httpOnly: true });
         console.log(req.cookies.jwt)
         
-         res.redirect( '/user/dashboard')
+         res.status(200).redirect('/user/dashboard')
     }else res.status(340).json({
         message : 'password does not matched'
     })

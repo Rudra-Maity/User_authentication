@@ -8,8 +8,12 @@ module.exports = function(req, res, next) {
   try {
     const decoded = jwtDecode(token);
     // req.user = decoded.user;
-    // console.log(decoded);
-    next();
+    console.log(decoded);
+    if(decoded){ 
+      req.userid=decoded.userId
+      next()
+    }
+    else return res.json({message :'Auth error'})
   } catch (e) {
     console.error(e);
     res.status(500).send({ message: "Invalid Token" });

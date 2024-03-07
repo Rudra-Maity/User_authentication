@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <title>signup</title>
+</head>
+<body>
+    
+    <form class="container">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">username : </label>
+            <input type="text" class="form-control" id="username" aria-describedby="emailHelp"><br>
+             <!-- <button class="btn btn-dark" type="button">verify</button> -->
+            <span></span>
+          </div>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Email : </label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <span></span>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" value="">
+    <span></span>
+  </div>
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  </div>
+  <button type="button" class="btn btn-primary">Submit</button> 
+  <span><a href="">Login ?</a></span>
+</form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const form=document.getElementsByTagName("button")[0];
+        const inp=document.getElementsByTagName("input");
+        const span=document.getElementsByTagName("span");
+        form.addEventListener("click",(e)=>{
+          e.preventDefault()
+          fetch ('/user/username',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' // Set the content type to JSON if sending JSON data
+              },
+              body:JSON.stringify({
+                username:inp[0].value
+              })
+            }).then((data)=>{
+              return data.json()
+            }).then((json)=>{
+              if(json.isNotExist){
+                const data= {
+                  method: 'POST',
+                  headers: {
+                'Content-Type': 'application/json' // Set the content type to JSON if sending JSON data
+              },
+            body: JSON.stringify({
+              username:inp[0].value,
+                email: inp[1].value,
+                password:inp[2].value
+              })
+              
+            };
+            fetch('/user/signup',data)
+            .then(data =>data.json())
+            .then((info)=>{
+              console.log(info);
+            })
+          }else span[0].innerText="choose another username"
+        } )
+        
+      })
+        </script>
+</body>
+</html>
