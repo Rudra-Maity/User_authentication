@@ -33,7 +33,8 @@ const SignUPController= async (req, res) => {
             // console.log(jwt)
             res.cookie('token', jwt, { expires: farFuture, httpOnly: true, secure: true })
             console.log(result);
-            res.redirect('/user/dashboard')
+            const redir= req.session.prev || '/'
+            res.redirect(redir);
             // delete req.session.prev
         })
         .catch((err) => {
@@ -81,8 +82,8 @@ const LoginController=async function(req,res){
         const oneYearInMilliseconds = 365 * 24 * 60 * 60 * 1000;
         res.cookie('token', ad, { maxAge: oneYearInMilliseconds, httpOnly: true });
         console.log(req.cookies.jwt)
-        
-         res.status(200).redirect('/user/dashboard')
+        const redir= req.session.prev || '/'
+         res.status(200).redirect(redir)
     }else res.status(340).json({
         message : 'password does not matched'
     })
@@ -112,11 +113,7 @@ const forgetPassword=async(req,res)=>{
   const encryptPass= await bcrypt.hash(password, salt);
  const user= await User.updateOne({email:email.toLowerCase()},{$set:{password:encryptPass}})
   if(user.n){
-    return res.status(200).json(
-      {
-        message : 'password reset'
-      }
-    )
+    return res.status(200).redirect('/user/login')
   } return res.status(340).json({
     message : 'email does not matched'
   })
