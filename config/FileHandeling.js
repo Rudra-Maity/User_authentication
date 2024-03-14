@@ -2,11 +2,15 @@ const path = require("path");
 const fs=require('fs');
 
 const FileHandeling=function(req,userId){
-    console.log('jj',req.files.file);
-    if (!req.files || Object.keys(req.files).length === 0) {
-        return [];
-      }
-      const uploadedFile = req.files.file;
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return [];
+  }
+  let uploadedFile=req.files.file;
+  if(Array.isArray(req.files.file)){
+    uploadFile=req.files.file[0]
+    console.log('cnkdk');
+  }
+  console.log('jj',uploadedFile);
       const fileExtension = path.extname(uploadedFile.name);
       const uploadDir=path.join(__dirname,'..','public',String(userId))
       if (!fs.existsSync(uploadDir)) {

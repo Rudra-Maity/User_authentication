@@ -1,5 +1,6 @@
 const user=require('../models/UserModel');
 const comments=require('../models/comments');
+const RepliesModel=require('../models/replies');
 
 
 const GetComments =async function(req,res){
@@ -56,4 +57,65 @@ const createComments=async function(req,res){
 // console.log('rqweer');
 }
 
-module.exports={GetComments,createComments}
+const updateComment=async function(req,res){
+    const email=req.userid
+    if(email){
+        try{
+            const txt=req.body.txt 
+            if(txt){
+            const cmtid=req.params.cmtid
+            const id=await user.findOne({email});
+            console.log(id);
+            const updatecomment=await comments.updateOne({_id:cmtid,commenterid:id._id},{ $set: {txt,updatedtime:new Date()} })
+
+            console.log(updatecomment);
+            if(updatecomment.n && updatecomment.nModified && updatecomment.ok){
+                return res.status(200).json(updatecomment)
+            }
+            else return res.status(340).json({
+                message : "comment id or userid not found"
+            })
+            }
+      else  return res.status(340).json({message:"text field compulsory"})
+
+        }catch(e){
+            return res.status(340).json({
+                message : "comment id or userid not found"
+            })
+            // console.log(e);
+        }
+    }
+}
+
+const DeleteComment= async function(req,res){
+    const email=req.userid
+    if(email){
+        try{
+            
+            const cmtid=req.params.cmtid
+            const id=await user.findOne({email},{_id:1});
+            const deletepost=await comments.deleteOne({_id:cmtid,commenterid:id._id})
+
+            const delreply=await RepliesModel.deleteMany({cmtid})
+
+            if( deletepost.ok && deletepost.n ){
+                console.log(deletepost);
+                return res.status(200).json(deletepost)
+                
+            }
+            else return res.status(340).json({
+                message : "comment id or userid is not found"
+            })
+            
+
+        }catch(e){
+            return res.status(340).json({
+                message : "comment id or userid not found"
+            })
+            // console.log(e);
+        }
+    }
+}
+
+
+module.exports={GetComments,createComments,updateComment,DeleteComment}

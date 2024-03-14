@@ -8,6 +8,7 @@ require('dotenv').config()
 const user = require("./routes/user");
 const posts=require('./routes/posts');
 const Comment=require('./routes/comments')
+const Replies=require('./routes/replies')
 const path = require("path");
 require("./config/db");
 
@@ -42,6 +43,7 @@ app.use(express.static(path.join(__dirname,'/public')));
 app.use("/user", user);
 app.use('/',posts)
 app.use('/post',Comment)
+app.use('/post/comments',Replies)
 
 app.listen(PORT, (req, res) => {
   console.log(`Server Started at PORT ${PORT}`);
