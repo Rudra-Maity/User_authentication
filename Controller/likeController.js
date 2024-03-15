@@ -14,6 +14,7 @@ const UpdateLIKE=async (req,res)=>{
     else if (postid && like==0){
         const findpost=await postmodel.findOne({_id:postid});
         if(findpost.likes>0){
+            //here min validator is not work so I describe this way
         const posts=await postmodel.findOneAndUpdate({_id:postid},
             { $inc: { likes: -1 } },{ new: true, runValidators: true } )
 
@@ -24,7 +25,7 @@ const UpdateLIKE=async (req,res)=>{
     })
 }
 }catch(e){
-    console.log(e);
+    // console.log(e);
     res.json({
         message:"some error"
     })

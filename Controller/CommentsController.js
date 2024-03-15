@@ -30,14 +30,15 @@ const GetComments =async function(req,res){
             message : "some Error"
         });
     }catch(e){
-        res.json()
-        console.log(e);
+        res.json({message : "some other error"})
+        // console.log(e);
     }
 }
 
 const createComments=async function(req,res){
     const email=req.userid
     if(email){
+        try{
         const postid=req.params.postid
         const txt= req.body.txt
         if(txt){
@@ -53,7 +54,12 @@ const createComments=async function(req,res){
         console.log('dsds');
         return res.status(340).json({message:"text field compulsory"})
     }
+}catch(e){
+    res.status(340).json({
+        message :"some error"
+    })
  }
+}
 // console.log('rqweer');
 }
 

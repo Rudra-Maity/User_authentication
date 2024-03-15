@@ -58,10 +58,11 @@ const creatReplies=async function(req,res){
         return res.status(340).json({message:"text field compulsory"})
     }
  }catch(e){
-    console.log(e);
+    res.status(400).json({message  : "some error"})
+    // console.log(e);
  }
 }
-console.log('rqweer');
+// console.log('rqweer');
 }
 
 const updateReplies=async function(req,res){

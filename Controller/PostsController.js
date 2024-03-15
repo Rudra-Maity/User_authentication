@@ -44,7 +44,8 @@ const GetPosts=async function(req,res,next){
         res.redirect('/user/login')
     }
     }catch(e){
-        console.log(e);
+        req.status(340).json({message : "some error"})
+        // console.log(e);
 
 }
 }
@@ -78,7 +79,8 @@ const createPosts=async function(req,res,next){
        })
     }
     }catch(e){
-        console.log(e);
+        res.status(400).json({message  : "some error"})
+        // console.log(e);
     }
 }
 
