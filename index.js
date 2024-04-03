@@ -30,9 +30,9 @@ app.use(session({
 })
 )
 
-// app.get("/", (req, res) => {
-//   res.send("<h1>Home Page</h1>");
-// });
+app.get("/res", (req, res) => {
+  res.sendFile(path.join(__dirname,'index.html'));
+});
 
 /**
  * Router Middleware
